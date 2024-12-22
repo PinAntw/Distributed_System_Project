@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 20 Team Rankings</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>前 20 名團隊排行榜</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>排名</th>
+                <th>團隊名稱</th>
+                <th>分數</th>
+            </tr>
+        </thead>
+        <tbody id="rankingTable">
+            動態填充內容
+        </tbody>
+    </table>
+
+    <script>
+        // 從後端 API 獲取前 20 名團隊分數
+        async function fetchRankings() {
+            try {
+                const response = await fetch('/ranking/api/ranking'); // 確保後端路由正確
+                if (!response.ok) {
+                    throw new Error('無法獲取團隊排名');
+                }
+
+                const data = await response.json();
+                const rankings = data.top_teams || [];
+                const tableBody = document.getElementById('rankingTable');
+                tableBody.innerHTML = ''; // 清空現有內容
+
+                if (rankings.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="3">目前沒有團隊排名資料</td></tr>`;
+                } else {
+                    rankings.forEach((team, index) => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${team.name}</td>
+                            <td>${team.score.toFixed(2)}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('獲取排名時發生錯誤:', error);
+                const tableBody = document.getElementById('rankingTable');
+                tableBody.innerHTML = `<tr><td colspan="3">無法取得排名資料，請稍後再試。</td></tr>`;
+            }
+        }
+
+        // 初始化
+        document.addEventListener("DOMContentLoaded", fetchRankings);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!-- old version-->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>團隊排名</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>即時團隊排名 - 前 20 名</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>排名</th>
+                <th>團隊名稱</th>
+                <th>分數</th>
+            </tr>
+        </thead>
+        <tbody id="rankingTable"> -->
+            <!-- 動態填充資料 -->
+        <!-- </tbody>
+    </table> -->
+<!-- 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 發送請求到後端取得排名數據
+            fetch("/ranking/api/top20")
+                .then(response => response.json())
+                .then(data => {
+                    const rankingTable = document.getElementById("rankingTable");
+                    rankingTable.innerHTML = ""; // 清空原始內容
+
+                    // 將資料填充至表格
+                    data.forEach((team, index) => {
+                        const row = `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${team.team_name}</td>
+                            <td>${team.score ? team.score.toFixed(2) : "0.00"}</td>
+                            </tr>
+                        `;
+                        rankingTable.innerHTML += row;
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching ranking data:", error);
+                    const rankingTable = document.getElementById("rankingTable");
+                    rankingTable.innerHTML = `<tr><td colspan="3">無法取得排名資料，請稍後再試。</td></tr>`;
+                });
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+

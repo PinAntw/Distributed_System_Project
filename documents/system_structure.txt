@@ -1,0 +1,25 @@
+mlhw7/
+│-- main.py                    # 主程式入口
+│-- database.py                # 資料庫連線設定
+│-- models.py                  # 定義資料表模型
+│-- schemas.py                 # 定義請求/回應格式
+│-- routers/
+│   │-- ranking.py             # 讓 routers 成為 Python 模組
+│   │-- auth.py                # 會員管理路由
+│   │-- post.py
+│   │-- team.py
+│   │-- group.py               # 打卡管理路由
+│-- utils/
+│   │-- security.py            # JWT 安全工具
+│   │-- score_calculator.py     
+│-- templates/
+│   │-- index.html             # 首頁模板
+│   │-- register.html          # 註冊頁面模板
+│   │-- checkin.html           # 打卡頁面模板
+│   │-- ranking.html           # 排名頁面模板
+│   │-- activity.html          # 活動報名模板
+│-- static/
+│   │-- style.css              # 靜態檔案（CSS, JS, 圖片等）
+│-- testscript/
+│   │-- test_script.py
+

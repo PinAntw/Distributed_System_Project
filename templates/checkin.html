@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打卡頁面</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>打卡界面</h1>
+
+    <!-- 打卡表單 -->
+    <form id="checkinForm">
+        <label for="post_content">打卡內容：</label>
+        <textarea id="post_content" name="post_content" required></textarea><br><br>
+
+        <button type="submit">提交打卡</button>
+    </form>
+
+    <!-- 回應訊息 -->
+    <div id="responseMessage"></div>
+
+    <script>
+        document.getElementById("checkinForm").addEventListener("submit", async (event) => {
+            event.preventDefault(); // 防止頁面刷新
+
+            const postContent = document.getElementById("post_content").value;
+            const user_id = localStorage.getItem("user_id");
+
+            if (!user_id) {
+                alert("請先登入！");
+                window.location.href = "/";  // 跳轉回登入頁面
+                return;
+            }
+
+            try {
+                // 發送打卡請求
+                const response = await fetch("/post/checkin", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_id, post_content: postContent })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("打卡成功！");
+                    window.location.href = "/ranking";
+                } else {
+                    alert(`打卡失敗: ${result.detail || JSON.stringify(result)}`);
+                }
+            } catch (error) {
+                console.error("打卡錯誤:", error);
+                alert("系統錯誤，請稍後再試。");
+            }
+        });
+
+    </script>
+</body>
+</html>

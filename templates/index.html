@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入頁面</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>用戶登入</h1>
+
+    <!-- 登入表單 -->
+    <form id="loginForm">
+        <label for="username">用戶名：</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">密碼：</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="submit">登入</button>
+    </form>
+
+    <!-- 註冊按鈕 -->
+    <div>
+        <p>還沒有帳號？立即 <button id="registerButton" style="background:none;border:none;color:blue;cursor:pointer;text-decoration:underline;">註冊</button></p>
+    </div>
+
+    <!-- 登入回應訊息 -->
+    <div id="responseMessage"></div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async (event) => {
+            event.preventDefault(); // 防止頁面刷新
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                // 發送登入請求
+                const response = await fetch("/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // 儲存用戶 ID 到 localStorage
+                    localStorage.setItem("user_id", result.user_id);
+                    alert("登入成功！");
+                    window.location.href = "/activity";
+                } else {
+                    alert(`登入失敗: ${result.detail}`);
+                }
+            } catch (error) {
+                console.error("登入錯誤:", error);
+                alert("系統錯誤，請稍後再試。");
+            }
+        });
+
+        // 跳轉到註冊頁面
+        document.getElementById("registerButton").addEventListener("click", () => {
+            window.location.href = "/register"; // 假設註冊頁面的路由是 /register
+        });
+    </script>
+</body>
+</html>

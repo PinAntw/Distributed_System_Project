@@ -1,0 +1,18 @@
+[資料表：]  
+        List of relations
+ Schema |     Name     | Type  |     
+--------+--------------+-------+
+ public | posts        | table | 
+ public | team_members | table | 
+ public | teams        | table | 
+ public | users        | table | 
+
+
+【常用語法】
+SELECT * FROM users;
+SELECT * FROM teams;
+SELECT * FROM team_members;
+SELECT * FROM posts;
+
+swagger ui 
+http://localhost:8000/docs
